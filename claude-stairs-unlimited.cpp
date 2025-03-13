@@ -2,29 +2,39 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
+#include <chrono> // 添加时间测量的头文件
 
 // 自定义哈希函数，用于哈希pair<int, vector<bool>>
 struct PairVectorBoolHash
 {
     std::size_t operator()(const std::pair<int, std::vector<bool>> &p) const
     {
-        std::size_t seed = std::hash<int>{}(p.first);
+        std::size_t seed = std::hash<int>()(p.first);
 
         // 组合vector<bool>的哈希值
         for (bool b : p.second)
         {
             // 使用标准的哈希组合技术
-            seed ^= std::hash<bool>{}(b) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+            seed ^= std::hash<bool>()(b) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
         }
         return seed;
+    }
+};
+
+// 添加相等比较函数
+struct PairVectorBoolEqual
+{
+    bool operator()(const std::pair<int, std::vector<bool>> &p1, const std::pair<int, std::vector<bool>> &p2) const
+    {
+        return p1.first == p2.first && p1.second == p2.second;
     }
 };
 
 class Solution
 {
 private:
-    // 使用自定义哈希的记忆化表
-    std::unordered_map<std::pair<int, std::vector<bool>>, int, PairVectorBoolHash> memo;
+    // 使用自定义哈希和相等比较函数的记忆化表
+    std::unordered_map<std::pair<int, std::vector<bool>>, int, PairVectorBoolHash, PairVectorBoolEqual> memo;
 
     int dp(int pos, std::vector<bool> &blocked, int n)
     {
@@ -112,6 +122,20 @@ int main()
     int n;
     std::cin >> n;
     Solution sol;
-    std::cout << sol.climbStairs(n) << std::endl;
+
+    // 开始计时
+    auto start = std::chrono::high_resolution_clock::now();
+
+    int result = sol.climbStairs(n);
+
+    // 结束计时
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // 计算运行时间（毫秒）
+    std::chrono::duration<double, std::milli> duration = end - start;
+
+    std::cout << result << std::endl;
+    std::cout << "程序运行时间: " << duration.count() << " 毫秒" << std::endl;
+
     return 0;
 }
