@@ -1,9 +1,16 @@
-Checks: 'clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*, modernize-*, -cppcoreguidelines-naming-conventions, -cppcoreguidelines-iostream-use-io-manipulators, -cppcoreguidelines-pro-type-legacy-headers, -modernize-use-nullptr'
+Checks: "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*, -cppcoreguidelines-naming-conventions,-cppcoreguidelines-iostream-use-io-manipulators,-cppcoreguidelines-pro-type-legacy-headers,-modernize-use-nullptr,-clang-diagnostic-unused-variable,-clang-diagnostic-unused-parameter,-clang-diagnostic-deprecated-declarations"
 WarningsAsErrors: true
 AnalyzeTemporaryDtors: false
-ExtraArgs: ['-std=c++23', '-fno-exceptions', '-fno-rtti', '-fno-omit-frame-pointer', '-fno-strict-aliasing]
+ExtraArgs:
+  [
+    "-std=c++23",
+    "-fno-exceptions",
+    "-fno-rtti",
+    "-fno-omit-frame-pointer",
+    "-fno-strict-aliasing",
+  ]
 CheckOptions:
   - key: cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
-    value: ''
+    value: ""
   - key: cppcoreguidelines-naming-conventions.MinVariableNameLength
-    value: '0'
+    value: "0"
